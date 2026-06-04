@@ -3,10 +3,12 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
+import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { toast } from "sonner";
 import { Toaster } from "@/components/ui/sonner";
 import { Loader2, Download, Copy, RefreshCw, FileCode2 } from "lucide-react";
 import { applyComposeParams, type ComposeParams } from "@/lib/compose-generator";
+import { InstallGuide } from "@/components/InstallGuide";
 
 const DEFAULTS: ComposeParams = {
   DATABASE_IP: "",
@@ -139,106 +141,119 @@ export default function App() {
           </Button>
         </header>
 
-        {loadError && (
-          <div className="mb-6 rounded-md border border-destructive/30 bg-destructive/5 p-4 text-sm text-destructive">
-            Falha ao carregar o compose remoto: {loadError}
-          </div>
-        )}
+        <Tabs defaultValue="generator" className="mt-6">
+          <TabsList>
+            <TabsTrigger value="generator">Gerador</TabsTrigger>
+            <TabsTrigger value="guide">Guia de Instalação</TabsTrigger>
+          </TabsList>
 
-        <Card>
-          <CardHeader>
-            <CardTitle>Parâmetros</CardTitle>
-            <CardDescription>
-              Campos marcados com <span className="text-destructive">*</span> são obrigatórios.
-            </CardDescription>
-          </CardHeader>
-          <CardContent>
-            <div className="grid grid-cols-1 gap-2 sm:grid-cols-2">
-              <Field
-                label="DATABASE_IP"
-                required
-                value={params.DATABASE_IP}
-                onChange={(v) => update("DATABASE_IP", v)}
-                placeholder="ex: 192.168.0.10"
-              />
-              <Field
-                label="DATABASE_PORTA"
-                required
-                type="number"
-                value={params.DATABASE_PORTA}
-                onChange={(v) => update("DATABASE_PORTA", v)}
-              />
-              <Field
-                label="DATABASE_NOME"
-                required
-                value={params.DATABASE_NOME}
-                onChange={(v) => update("DATABASE_NOME", v)}
-              />
-              <Field
-                label="DATABASE_USUARIO"
-                required
-                value={params.DATABASE_USUARIO}
-                onChange={(v) => update("DATABASE_USUARIO", v)}
-              />
-              <Field
-                label="DATABASE_SENHA"
-                required
-                value={params.DATABASE_SENHA}
-                onChange={(v) => update("DATABASE_SENHA", v)}
-                placeholder="senha do banco"
-              />
-              <Field
-                label="SYSTEM_NUMEROLOJA"
-                required
-                type="number"
-                value={params.SYSTEM_NUMEROLOJA}
-                onChange={(v) => update("SYSTEM_NUMEROLOJA", v)}
-              />
-              <Field
-                label="RABBITMQ_IP (Manager IP)"
-                required
-                value={params.RABBITMQ_IP}
-                onChange={(v) => update("RABBITMQ_IP", v)}
-                placeholder="ex: 192.168.0.20"
-              />
-            </div>
+          <TabsContent value="generator">
+            {loadError && (
+              <div className="mb-6 rounded-md border border-destructive/30 bg-destructive/5 p-4 text-sm text-destructive">
+                Falha ao carregar o compose remoto: {loadError}
+              </div>
+            )}
 
-            <div className="mt-6 flex flex-wrap items-center gap-3">
-              <Button onClick={handleGenerate} disabled={loadingSource || !yamlSource}>
-                {loadingSource && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-                Gerar Compose
-              </Button>
-              {generated && (
-                <>
-                  <Button variant="secondary" onClick={handleDownload}>
-                    <Download className="mr-2 h-4 w-4" />
-                    Baixar Docker Compose
+            <Card>
+              <CardHeader>
+                <CardTitle>Parâmetros</CardTitle>
+                <CardDescription>
+                  Campos marcados com <span className="text-destructive">*</span> são obrigatórios.
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <div className="grid grid-cols-1 gap-2 sm:grid-cols-2">
+                  <Field
+                    label="DATABASE_IP"
+                    required
+                    value={params.DATABASE_IP}
+                    onChange={(v) => update("DATABASE_IP", v)}
+                    placeholder="ex: 192.168.0.10"
+                  />
+                  <Field
+                    label="DATABASE_PORTA"
+                    required
+                    type="number"
+                    value={params.DATABASE_PORTA}
+                    onChange={(v) => update("DATABASE_PORTA", v)}
+                  />
+                  <Field
+                    label="DATABASE_NOME"
+                    required
+                    value={params.DATABASE_NOME}
+                    onChange={(v) => update("DATABASE_NOME", v)}
+                  />
+                  <Field
+                    label="DATABASE_USUARIO"
+                    required
+                    value={params.DATABASE_USUARIO}
+                    onChange={(v) => update("DATABASE_USUARIO", v)}
+                  />
+                  <Field
+                    label="DATABASE_SENHA"
+                    required
+                    value={params.DATABASE_SENHA}
+                    onChange={(v) => update("DATABASE_SENHA", v)}
+                    placeholder="senha do banco"
+                  />
+                  <Field
+                    label="SYSTEM_NUMEROLOJA"
+                    required
+                    type="number"
+                    value={params.SYSTEM_NUMEROLOJA}
+                    onChange={(v) => update("SYSTEM_NUMEROLOJA", v)}
+                  />
+                  <Field
+                    label="RABBITMQ_IP (Manager IP)"
+                    required
+                    value={params.RABBITMQ_IP}
+                    onChange={(v) => update("RABBITMQ_IP", v)}
+                    placeholder="ex: 192.168.0.20"
+                  />
+                </div>
+
+                <div className="mt-6 flex flex-wrap items-center gap-3">
+                  <Button onClick={handleGenerate} disabled={loadingSource || !yamlSource}>
+                    {loadingSource && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+                    Gerar Compose
                   </Button>
-                  <Button variant="outline" onClick={handleCopy}>
-                    <Copy className="mr-2 h-4 w-4" />
-                    Copiar
-                  </Button>
-                </>
-              )}
-            </div>
-          </CardContent>
-        </Card>
+                  {generated && (
+                    <>
+                      <Button variant="secondary" onClick={handleDownload}>
+                        <Download className="mr-2 h-4 w-4" />
+                        Baixar Docker Compose
+                      </Button>
+                      <Button variant="outline" onClick={handleCopy}>
+                        <Copy className="mr-2 h-4 w-4" />
+                        Copiar
+                      </Button>
+                    </>
+                  )}
+                </div>
+              </CardContent>
+            </Card>
 
-        {generated && (
-          <Card className="mt-2">
-            <CardHeader>
-              <CardTitle>Pré-visualização</CardTitle>
-              <CardDescription>
-                Conteúdo final do <code>docker-compose-vrmobileserver.yml</code>.
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
-              <pre className="max-h-[28rem] overflow-auto rounded-md border border-border bg-muted/40 p-4 font-mono text-xs leading-relaxed">
-                <code>{generated}</code>
-              </pre>
-            </CardContent>
-          </Card>
-        )}
+            {generated && (
+              <Card className="mt-2">
+                <CardHeader>
+                  <CardTitle>Pré-visualização</CardTitle>
+                  <CardDescription>
+                    Conteúdo final do <code>docker-compose-vrmobileserver.yml</code>.
+                  </CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <pre className="max-h-[28rem] overflow-auto rounded-md border border-border bg-muted/40 p-4 font-mono text-xs leading-relaxed">
+                    <code>{generated}</code>
+                  </pre>
+                </CardContent>
+              </Card>
+            )}
+          </TabsContent>
+
+          <TabsContent value="guide">
+            <InstallGuide />
+          </TabsContent>
+        </Tabs>
 
         <footer className="mt-3 text-center text-xs text-muted-foreground">
           Nenhum dado informado é armazenado. O arquivo é gerado localmente no seu navegador.
