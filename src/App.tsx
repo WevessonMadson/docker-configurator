@@ -3,10 +3,12 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
+import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { toast } from "sonner";
 import { Toaster } from "@/components/ui/sonner";
 import { Loader2, Download, Copy, RefreshCw, FileCode2 } from "lucide-react";
 import { applyComposeParams, type ComposeParams } from "@/lib/compose-generator";
+import { InstallGuide } from "@/components/InstallGuide";
 
 const DEFAULTS: ComposeParams = {
   DATABASE_IP: "",
