@@ -12,17 +12,17 @@ import { applyComposeParams, type ComposeParams } from "@/lib/compose-generator"
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "VRMobileServer — Gerador de Docker Compose" },
+      { title: "VRMobileServer — Docker Compose" },
       {
         name: "description",
         content:
-          "Gere o arquivo docker-compose.yml do VRMobileServer preenchendo os parâmetros de ambiente.",
+          "Gere o arquivo docker-compose-vrmobileserver.yml do VRMobileServer preenchendo os parâmetros de ambiente.",
       },
       { property: "og:title", content: "VRMobileServer — Gerador de Docker Compose" },
       {
         property: "og:description",
         content:
-          "Gere o arquivo docker-compose.yml do VRMobileServer preenchendo os parâmetros de ambiente.",
+          "Gere o arquivo docker-compose-vrmobileserver.yml do VRMobileServer preenchendo os parâmetros de ambiente.",
       },
     ],
   }),
@@ -71,7 +71,7 @@ function Index() {
     setParams((p) => ({ ...p, [k]: v }));
 
   const missingRequired = useMemo(() => {
-    const req: (keyof ComposeParams)[] = ["DATABASE_IP", "DATABASE_SENHA", "RABBITMQ_IP"];
+    const req: (keyof ComposeParams)[] = ["DATABASE_IP", "DATABASE_SENHA", "RABBITMQ_IP", "SYSTEM_NUMEROLOJA","DATABASE_USUARIO", "DATABASE_PORTA", "DATABASE_NOME"];
     return req.filter((k) => !params[k].trim());
   }, [params]);
 
@@ -119,22 +119,22 @@ function Index() {
   return (
     <div className="min-h-screen bg-background">
       <Toaster richColors position="top-right" />
-      <div className="mx-auto max-w-5xl px-4 py-10 sm:py-14">
-        <header className="mb-8 flex items-start justify-between gap-4">
+      <div className="mx-auto max-w-5xl px-4 py-10 sm:py-3">
+        <header className="flex items-start justify-between gap-4">
           <div>
             <div className="mb-2 inline-flex items-center gap-2 rounded-full border border-border bg-muted px-3 py-1 text-xs font-medium text-muted-foreground">
               <FileCode2 className="h-3.5 w-3.5" />
               VRMobileServer
             </div>
             <h1 className="text-3xl font-bold tracking-tight sm:text-4xl">
-              Gerador de Docker Compose
+              Gerador do Docker Compose
             </h1>
             <p className="mt-2 max-w-2xl text-sm text-muted-foreground">
-              Preencha os parâmetros de ambiente e gere a versão personalizada do{" "}
+              Preencha os parâmetros de ambiente e gere a versão personalizada do
               <code className="rounded bg-muted px-1 py-0.5 text-xs">
-                docker-compose.yml
+                docker-compose-vrmobileserver.yml
               </code>
-              . O arquivo base é sempre carregado da fonte oficial mais recente.
+              . O arquivo base é sempre carregado da da VR, sendo sempre a última versão.
             </p>
           </div>
           <Button
@@ -166,7 +166,7 @@ function Index() {
             </CardDescription>
           </CardHeader>
           <CardContent>
-            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+            <div className="grid grid-cols-1 gap-2 sm:grid-cols-2">
               <Field
                 label="DATABASE_IP"
                 required
@@ -176,17 +176,20 @@ function Index() {
               />
               <Field
                 label="DATABASE_PORTA"
+                required
                 type="number"
                 value={params.DATABASE_PORTA}
                 onChange={(v) => update("DATABASE_PORTA", v)}
               />
               <Field
                 label="DATABASE_NOME"
+                required
                 value={params.DATABASE_NOME}
                 onChange={(v) => update("DATABASE_NOME", v)}
               />
               <Field
                 label="DATABASE_USUARIO"
+                required
                 value={params.DATABASE_USUARIO}
                 onChange={(v) => update("DATABASE_USUARIO", v)}
               />
@@ -199,12 +202,13 @@ function Index() {
               />
               <Field
                 label="SYSTEM_NUMEROLOJA"
+                required
                 type="number"
                 value={params.SYSTEM_NUMEROLOJA}
                 onChange={(v) => update("SYSTEM_NUMEROLOJA", v)}
               />
               <Field
-                label="RABBITMQ_IP"
+                label="RABBITMQ_IP (Manager IP)"
                 required
                 value={params.RABBITMQ_IP}
                 onChange={(v) => update("RABBITMQ_IP", v)}
@@ -234,7 +238,7 @@ function Index() {
         </Card>
 
         {generated && (
-          <Card className="mt-6">
+          <Card className="mt-2">
             <CardHeader>
               <CardTitle>Pré-visualização</CardTitle>
               <CardDescription>
@@ -249,7 +253,7 @@ function Index() {
           </Card>
         )}
 
-        <footer className="mt-10 text-center text-xs text-muted-foreground">
+        <footer className="mt-3 text-center text-xs text-muted-foreground">
           Nenhum dado informado é armazenado. O arquivo é gerado localmente no seu navegador.
         </footer>
       </div>
