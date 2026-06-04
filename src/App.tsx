@@ -1,4 +1,3 @@
-import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useMemo, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -8,26 +7,6 @@ import { toast } from "sonner";
 import { Toaster } from "@/components/ui/sonner";
 import { Loader2, Download, Copy, RefreshCw, FileCode2 } from "lucide-react";
 import { applyComposeParams, type ComposeParams } from "@/lib/compose-generator";
-
-export const Route = createFileRoute("/")({
-  head: () => ({
-    meta: [
-      { title: "VRMobileServer — Docker Compose" },
-      {
-        name: "description",
-        content:
-          "Gere o arquivo docker-compose-vrmobileserver.yml do VRMobileServer preenchendo os parâmetros de ambiente.",
-      },
-      { property: "og:title", content: "VRMobileServer — Gerador de Docker Compose" },
-      {
-        property: "og:description",
-        content:
-          "Gere o arquivo docker-compose-vrmobileserver.yml do VRMobileServer preenchendo os parâmetros de ambiente.",
-      },
-    ],
-  }),
-  component: Index,
-});
 
 const DEFAULTS: ComposeParams = {
   DATABASE_IP: "",
@@ -39,7 +18,7 @@ const DEFAULTS: ComposeParams = {
   RABBITMQ_IP: "",
 };
 
-function Index() {
+export default function App() {
   const [yamlSource, setYamlSource] = useState<string>("");
   const [loadingSource, setLoadingSource] = useState(true);
   const [loadError, setLoadError] = useState<string | null>(null);
@@ -71,7 +50,15 @@ function Index() {
     setParams((p) => ({ ...p, [k]: v }));
 
   const missingRequired = useMemo(() => {
-    const req: (keyof ComposeParams)[] = ["DATABASE_IP", "DATABASE_SENHA", "RABBITMQ_IP", "SYSTEM_NUMEROLOJA","DATABASE_USUARIO", "DATABASE_PORTA", "DATABASE_NOME"];
+    const req: (keyof ComposeParams)[] = [
+      "DATABASE_IP",
+      "DATABASE_SENHA",
+      "RABBITMQ_IP",
+      "SYSTEM_NUMEROLOJA",
+      "DATABASE_USUARIO",
+      "DATABASE_PORTA",
+      "DATABASE_NOME",
+    ];
     return req.filter((k) => !params[k].trim());
   }, [params]);
 
