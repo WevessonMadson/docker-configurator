@@ -36,26 +36,38 @@ export function InstallGuide() {
     const container = containerRef.current;
     if (!container) return;
 
-    let rafId: number;
+    let rafId = 0;
+    let attempts = 0;
 
-    const restoreScroll = () => {
+    const tryRestore = () => {
       const saved = sessionStorage.getItem(STORAGE_KEY);
-      if (saved !== null) {
-        const pos = parseInt(saved, 10);
-        cancelAnimationFrame(rafId);
-        rafId = requestAnimationFrame(() => {
+      if (saved === null) return;
+      const pos = parseInt(saved, 10);
+      if (Number.isNaN(pos)) return;
+
+      attempts = 0;
+      const attempt = () => {
+        attempts++;
+        const maxScroll =
+          document.documentElement.scrollHeight - window.innerHeight;
+        if (maxScroll >= pos - 1 || attempts > 60) {
           window.scrollTo({ top: pos });
-        });
-      }
+        } else {
+          rafId = requestAnimationFrame(attempt);
+        }
+      };
+      cancelAnimationFrame(rafId);
+      rafId = requestAnimationFrame(attempt);
     };
 
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            restoreScroll();
-          }
+          const wasVisible = isVisibleRef.current;
           isVisibleRef.current = entry.isIntersecting;
+          if (entry.isIntersecting && !wasVisible) {
+            tryRestore();
+          }
         });
       },
       { threshold: 0 }
@@ -68,14 +80,16 @@ export function InstallGuide() {
     };
 
     observer.observe(container);
-    window.addEventListener("scroll", handleWindowScroll);
+    window.addEventListener("scroll", handleWindowScroll, { passive: true });
+
+    tryRestore();
 
     return () => {
       observer.disconnect();
       window.removeEventListener("scroll", handleWindowScroll);
       cancelAnimationFrame(rafId);
     };
-  }, []);
+  }, [content]);
 
   return (
     <div ref={containerRef}>
