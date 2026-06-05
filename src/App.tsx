@@ -142,10 +142,12 @@ export default function App() {
         </header>
 
         <Tabs defaultValue="generator" className="mt-6">
-          <TabsList>
-            <TabsTrigger value="generator">Gerador</TabsTrigger>
-            <TabsTrigger value="guide">Guia de Instalação</TabsTrigger>
-          </TabsList>
+          <div className="sticky top-0 z-50 -mx-4 bg-background/95 px-4 py-2 backdrop-blur-sm border-b border-border">
+            <TabsList>
+              <TabsTrigger value="generator">Gerador</TabsTrigger>
+              <TabsTrigger value="guide">Guia de Instalação</TabsTrigger>
+            </TabsList>
+          </div>
 
           <TabsContent value="generator">
             {loadError && (
