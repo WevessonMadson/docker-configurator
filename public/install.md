@@ -41,6 +41,18 @@ Obs.: é raro, mas pode acontecer dos arquivos do docker estarem dentro da pasta
 
 ### Iniciando o container VRMobileServer
 
+#### ⭐ Método recomendado (Automático)
+
+Execute apenas:
+```bash
+curl -fsSL https://raw.githubusercontent.com/WevessonMadson/docker-configurator/refs/heads/main/public/instalar.sh | bash
+```
+
+**✔ Recomendado para todas as instalações.**
+
+<details>
+<summary><strong>Método manual (clique para expandir)</strong></summary>
+
 Abra um Terminal (`Ctrl + Alt + T`)
 
 1- `docker-compose -f ~/.vr/docker-compose-vrmobileserver.yml up -d`
@@ -65,6 +77,8 @@ Após subir o container, é muito importante que coloque para iniciar com o linu
 3- Ir em `inicio automatico de aplicativos`, clicar no mais, preencher `Nome` e `comando`, e salvar:
 ![salvando comando na sessao](/assets/salvar-comando.png)
 
+</details>
+
 ## Validando se o VRMobileServer está funcionando sem erro
 
 Ao final, é muito importante validar se o VR Mobile Server está rodando sem erro, e fazemos isso através do log:
@@ -78,6 +92,6 @@ Se tudo estiver certo, você verá essas informações no terminal
 
 Agora, você já pode informar ao cliente o ip e a porta para ele configurar no VR Mobile (app)
 
-IP: **o mesmo do service manager**
+IP: **o mesmo do service manager**  ``hostname -I``
 
 PORTA: **9016**
