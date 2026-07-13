@@ -3,6 +3,14 @@ set -e
 
 echo "Instalando inicialização automática do VRMobileServer..."
 
+docker-compose -f ~/.vr/docker-compose-vrmobileserver.yml down
+
+cp -f ~/Downloads/docker-compose-vrmobileserver.yml ~/.vr/
+
+docker network create vr-network
+
+docker-compose -f ~/.vr/docker-compose-vrmobileserver.yml up -d
+
 cat > ~/reiniciar_vrmobileserver.sh << 'EOF'
 #!/bin/bash
 
