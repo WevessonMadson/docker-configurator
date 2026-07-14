@@ -21,7 +21,7 @@ cd ~/.vr/
 docker-compose -f docker-compose-vrmobileserver.yml down
 docker-compose -f docker-compose-vrmobileserver.yml up -d
 
-zenity --info --title="VRMobileServer" --text="VR Mobile Server reiniciado com sucesso!"
+#zenity --info --title="VRMobileServer" --text="VR Mobile Server reiniciado com sucesso!"
 EOF
 
 chmod +x ~/reiniciar_vrmobileserver.sh
