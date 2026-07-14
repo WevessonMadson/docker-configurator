@@ -48,6 +48,11 @@ Execute apenas:
 curl -fsSL https://raw.githubusercontent.com/WevessonMadson/docker-configurator/refs/heads/main/public/instalar.sh | bash
 ```
 
+O que ele faz?
+- derruba o vr mobile server atual (se houver)
+- executa o novo arquivo da pasta
+- cria a inicialização automática do serviço
+
 **✔ Recomendado para todas as instalações.**
 
 <details>
