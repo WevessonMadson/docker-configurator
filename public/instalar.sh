@@ -5,6 +5,8 @@ echo "Instalando inicialização automática do VRMobileServer..."
 
 docker-compose -f ~/.vr/docker-compose-vrmobileserver.yml down
 
+docker network remove vr-network
+
 docker network create vr-network
 
 docker-compose -f ~/.vr/docker-compose-vrmobileserver.yml up -d
