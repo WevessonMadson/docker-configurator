@@ -44,6 +44,7 @@ echo "========================================="
 echo "Configuração concluída com sucesso!"
 echo "O VRMobileServer será reiniciado"
 echo "automaticamente após o login no Ubuntu."
+echo
+echo "Para os logs do serviço, execute:"
+echo "docker logs -f vr_vrmobileserver_1"
 echo "========================================="
-
-docker logs -f vr_vrmobileserver_1
